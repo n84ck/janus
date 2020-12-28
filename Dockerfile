@@ -342,7 +342,7 @@ RUN npm -v
 
 
 
-CMD nginx && janus
+CMD nginx && /opt/janus/bin/janus
 
 # RUN apt-get -y install iperf iperf3
 # RUN git clone https://github.com/HewlettPackard/netperf.git && \
