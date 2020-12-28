@@ -64,7 +64,7 @@ RUN YASM="1.3.0" && cd ~/ffmpeg_sources && \
     make install && \
     make distclean
 
-RUN VPX="v1.8.1" && cd ~/ffmpeg_sources && \
+RUN VPX="v1.9.0" && cd ~/ffmpeg_sources && \
     wget https://chromium.googlesource.com/webm/libvpx/+archive/$VPX.tar.gz && \
     tar xzvf $VPX.tar.gz && \
     pwd \
@@ -113,11 +113,11 @@ RUN FDK_AAC="2.0.1" && cd ~/ffmpeg_sources && \
     make install && \
     make distclean
 
-RUN FFMPEG_VER="n4.2.1" && cd ~/ffmpeg_sources && \
+RUN FFMPEG_VER="n4.3.1" && cd ~/ffmpeg_sources && \
     wget https://github.com/FFmpeg/FFmpeg/archive/$FFMPEG_VER.zip && \
     unzip $FFMPEG_VER.zip
 
-RUN FFMPEG_VER="n4.2.1" && cd ~/ffmpeg_sources && \
+RUN FFMPEG_VER="n4.3.1" && cd ~/ffmpeg_sources && \
     cd FFmpeg-$FFMPEG_VER && \
     PATH="$HOME/bin:$PATH" PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
     --prefix="$HOME/ffmpeg_build" \
@@ -294,7 +294,7 @@ RUN make && make install
 
 
 RUN cd / && git clone https://github.com/meetecho/janus-gateway.git && cd /janus-gateway && \
-    git checkout refs/tags/v0.10.7 && \
+    git checkout refs/tags/v0.10.9 && \
     sh autogen.sh &&  \
     PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
     --enable-post-processing \
