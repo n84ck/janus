@@ -146,46 +146,6 @@ RUN FFMPEG_VER="n4.3.1" && cd ~/ffmpeg_sources && \
     mv ~/bin/ffmpeg /usr/local/bin/
 
 
-
-
-# nginx-rtmp with openresty
-RUN ZLIB="zlib-1.2.11" && vNGRTMP="v1.1.11" && PCRE="8.41" && nginx_build=/root/nginx && mkdir $nginx_build && \
-    cd $nginx_build && \
-    wget https://ftp.pcre.org/pub/pcre/pcre-$PCRE.tar.gz && \
-    tar -zxf pcre-$PCRE.tar.gz && \
-    cd pcre-$PCRE && \
-    ./configure && make && make install && \
-    cd $nginx_build && \
-    wget http://zlib.net/$ZLIB.tar.gz && \
-    tar -zxf $ZLIB.tar.gz && \
-    cd $ZLIB && \
-    ./configure && make &&  make install && \
-    cd $nginx_build && \
-    wget https://github.com/arut/nginx-rtmp-module/archive/$vNGRTMP.tar.gz && \
-    tar zxf $vNGRTMP.tar.gz && mv nginx-rtmp-module-* nginx-rtmp-module
-
-
-RUN OPENRESTY="1.13.6.2" && ZLIB="zlib-1.2.11" && PCRE="pcre-8.41" &&  openresty_build=/root/openresty && mkdir $openresty_build && \
-    wget https://openresty.org/download/openresty-$OPENRESTY.tar.gz && \
-    tar zxf openresty-$OPENRESTY.tar.gz && \
-    cd openresty-$OPENRESTY && \
-    nginx_build=/root/nginx && \
-    ./configure --sbin-path=/usr/local/nginx/nginx \
-    --conf-path=/usr/local/nginx/nginx.conf  \
-    --pid-path=/usr/local/nginx/nginx.pid \
-    --with-pcre-jit \
-    --with-ipv6 \
-    --with-pcre=$nginx_build/$PCRE \
-    --with-zlib=$nginx_build/$ZLIB \
-    --with-http_ssl_module \
-    --with-stream \
-    --with-mail=dynamic \
-    --add-module=$nginx_build/nginx-rtmp-module && \
-    make && make install && mv /usr/local/nginx/nginx /usr/local/bin
-
-
-
-
 # Boringssl build section
 # If you want to use the openssl instead of boringssl
 # RUN apt-get update -y && apt-get install -y libssl-dev
@@ -226,6 +186,43 @@ RUN git clone https://boringssl.googlesource.com/boringssl && \
     sudo cp build/ssl/libssl.a /opt/boringssl/lib/  && \
     sudo cp build/crypto/libcrypto.a /opt/boringssl/lib/
 
+# nginx-rtmp with openresty
+RUN ZLIB="zlib-1.2.11" && vNGRTMP="v1.1.11" && PCRE="8.41" && nginx_build=/root/nginx && mkdir $nginx_build && \
+    cd $nginx_build && \
+    wget https://ftp.pcre.org/pub/pcre/pcre-$PCRE.tar.gz && \
+    tar -zxf pcre-$PCRE.tar.gz && \
+    cd pcre-$PCRE && \
+    ./configure && make && make install && \
+    cd $nginx_build && \
+    wget http://zlib.net/$ZLIB.tar.gz && \
+    tar -zxf $ZLIB.tar.gz && \
+    cd $ZLIB && \
+    ./configure && make &&  make install && \
+    cd $nginx_build && \
+    wget https://github.com/arut/nginx-rtmp-module/archive/$vNGRTMP.tar.gz && \
+    tar zxf $vNGRTMP.tar.gz && mv nginx-rtmp-module-* nginx-rtmp-module
+
+
+RUN OPENRESTY="1.13.6.2" && ZLIB="zlib-1.2.11" && PCRE="pcre-8.41" &&  openresty_build=/root/openresty && mkdir $openresty_build && \
+    wget https://openresty.org/download/openresty-$OPENRESTY.tar.gz && \
+    tar zxf openresty-$OPENRESTY.tar.gz && \
+    cd openresty-$OPENRESTY && \
+    nginx_build=/root/nginx && \
+    ./configure --sbin-path=/usr/local/nginx/nginx \
+    --conf-path=/usr/local/nginx/nginx.conf  \
+    --pid-path=/usr/local/nginx/nginx.pid \
+    --with-pcre-jit \
+    --with-ipv6 \
+    --with-pcre=$nginx_build/$PCRE \
+    --with-zlib=$nginx_build/$ZLIB \
+    --with-http_ssl_module \
+    --with-stream \
+    --with-mail=dynamic \
+    --with-openssl=/opt/boringssl \
+    --add-module=$nginx_build/nginx-rtmp-module && \
+    make && make install && mv /usr/local/nginx/nginx /usr/local/bin
+    
+    
 
 RUN LIBWEBSOCKET="3.1.0" && wget https://github.com/warmcat/libwebsockets/archive/v$LIBWEBSOCKET.tar.gz && \
     tar xzvf v$LIBWEBSOCKET.tar.gz && \
