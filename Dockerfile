@@ -218,7 +218,7 @@ RUN OPENRESTY="1.13.6.2" && ZLIB="zlib-1.2.11" && PCRE="pcre-8.41" &&  openresty
     --with-http_ssl_module \
     --with-stream \
     --with-mail=dynamic \
-    --with-openssl=/opt/boringssl \
+    --with-openssl \
     --with-cc-opt="-I/opt/boringssl/include" \
     --with-ld-opt="-L/opt/boringssl/openssl/lib" \
     --add-module=$nginx_build/nginx-rtmp-module && \
